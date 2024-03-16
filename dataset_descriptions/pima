@@ -1,0 +1,5 @@
+Pima is a dataset with notibly small number of samples and dimentions at 768 and 8 respectively.
+It is a binary classification database with 1 denoting patiend with diabeties and 0 without.
+All subjects are at least 23 year-old females with of Pima Indian heritage from which the dataset draws it's name.
+Variables taken into account during classification are number of pregnancies the patient has had, their BMI, insulin level, age, glucose level, blood pressure, skin thickness, insulin level and diabetes pedigree.
+The dataset is much more balanced that other with 35% of samples representing the positive (outlier) class.

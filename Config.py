@@ -1,4 +1,7 @@
+import random
 from pathlib import Path
+
+import numpy as np
 
 
 class Config:
@@ -9,3 +12,9 @@ class Config:
     tex_parts_path = root / 'tex_parts'
     image_path = root / 'image_path'
     image_path.mkdir(exist_ok=True)
+    dataset_descriptions = root / 'dataset_descriptions'
+    random_state = 42
+
+
+random.seed(Config.random_state)
+np.random.seed(Config.random_state)
