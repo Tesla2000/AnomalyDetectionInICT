@@ -17,17 +17,17 @@ from sequence2array import sequence2latex
 
 
 def main():
-    text = r"\section{Zbiory danych}"
-    text += "\nWybrano następujące zbiory danych"
+    text = r"\section{Datasets}"
+    text += "\nThe folowing datasets were chosen"
     text += " ".join(
         dataset_path.name for dataset_path in Config.datasets_path.iterdir()
     )
     table_name = "table:wymiary_zbiorow"
-    text += r" z wymiarami podanymi w tabeli \ref{" + table_name + "}."
+    text += r" with parameters presented in \ref{" + table_name + "}."
     text += "\n"
     text += sequence2latex(
         (
-            ("Zbiór", "Liczba próbek", "Liczba wymiarów", "Liczba outlierów"),
+            ("Dataset", "Number of samples", "Number of dimensions", "Number of outliers"),
             *tuple(
                 (
                     dataset_path.with_suffix("").name,
@@ -37,7 +37,7 @@ def main():
                 for dataset_path in Config.datasets_path.iterdir()
             ),
         ),
-        caption="Informacje ilościowe o badanych zbiorach",
+        caption="Numerical information on datasets",
         label=table_name,
         placement="h",
     )
@@ -46,7 +46,7 @@ def main():
         dataset = scipy.io.loadmat(dataset_path)
         dataset_name = dataset_path.with_suffix("").name
         text += "\n" + Config.dataset_descriptions.joinpath(dataset_name).read_text()
-        text += "\n" r"\section{Zbiór danych " + dataset_name + "}\n"
+        text += "\n" r"\section{Dataset " + dataset_name + "}\n"
         x, y = dataset["X"], dataset["y"]
         del dataset
         pvalue = jarque_bera(x).pvalue
@@ -95,8 +95,8 @@ def main():
         text += fig2latex(
             image_path.relative_to(Config.root),
             placement="h",
-            caption=f"Krzywa ROC dla {dataset_name} i metody {method_name}",
-            label=f"figure:{method_name}",
+            caption=f"ROC curve of {dataset_name} dataset",
+            label=f"figure:{dataset_name}",
         )
     table_name = "table:running_times_and_results"
     text += (
@@ -110,11 +110,18 @@ def main():
             chain.from_iterable((("AUC", "Execution time [s]")) for _ in model_types)
         ),
     ] + method_running_times
+    text += "\n"r"\section{Analysis}""\n"
+    text += (r"As showen in Table \ref{" + table_name +
+             "} the best results across all datasets were achieved by EllipticEnvelope and IsolationForest methods. "
+             "The results varied a lot between datests with the worst obtained on pima dataset . "
+             "Musk and thyroid scored similarly with, near-perfect results on effective methods and results being a bit worse on thyroid dataset.")
     text += sequence2latex(
         method_running_times,
         label=table_name,
         caption="AUC score and execution time of given method on dataset",
     )
+    text += "\n"r"\section{Summary}""\n"
+    text += "which shows that a number of dimentions doesn't play more significant role in outliers detection than other parameter of dataset"
     Config.tex_path.write_text(
         Config.base_tex_path.read_text()
         .replace("{", "`~")
