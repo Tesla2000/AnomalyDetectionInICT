@@ -1,2 +1,4 @@
 Thyroid come with large number of samples with a small number of parameters.
-The original dataset is used in classification between
+The original dataset is used in classification between hypothyroid and non-hypothyroid patients.
+To that end 3 classes are build normal (not hypothyroid), hyperfunction and subnormal functioning.
+The hyperfunction class is treated as outlier class and other two classes are inliers on the grounds that hyperfunction is a clear minority class.
