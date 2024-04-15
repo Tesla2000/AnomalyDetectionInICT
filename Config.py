@@ -6,6 +6,7 @@ import numpy as np
 
 class Config:
     root = Path(__file__).parent
+    text_sections = root / "sections"
     datasets_path = root / "datasets"
     base_tex_path = root / "base.tex"
     tex_path = root / "main.tex"
