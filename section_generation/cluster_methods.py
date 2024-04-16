@@ -1,54 +1,43 @@
-from functools import wraps
 from itertools import chain
 from pathlib import Path
 from time import time
 
+import numpy as np
 import scipy
 from fig2latex import fig2latex
 from matplotlib import pyplot as plt
 from sklearn.metrics import roc_curve, auc
-from sklearn.model_selection import train_test_split
-from sklearn.svm import SVC
-from xgboost import XGBClassifier
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import normalize
 
 from Config import Config
 from sequence2array import sequence2latex
 
 
-def supervised_methods():
+def cluster_methods():
     method_running_times = []
-    text = "\section{Supervised anomaly detection}"
+    text = "\section{Neighbourhood anomaly detection}"
     dataset_path = Config.datasets_path.joinpath('pima.mat')
     dataset = scipy.io.loadmat(dataset_path)
     dataset_name = dataset_path.with_suffix("").name
     x, y = dataset["X"], dataset["y"]
     del dataset
-    x_train, x_test, y_train, y_test = train_test_split(
-        x, y, test_size=0.2, random_state=Config.random_state
-    )
-    del x, y
     method_running_times.append([dataset_name])
-    model_types = (
-        wraps(SVC)(lambda: SVC(probability=True)),
-        wraps(XGBClassifier)(lambda: XGBClassifier()),
-    )
-    for model_type in model_types:
-        model = model_type()
-        start = time()
-        model.fit(x_train, y_train)
-        y_pred = model.predict(x_test)
-        y_pred[y_pred == 1] = 0  # inliers
-        y_pred[y_pred == -1] = 1  # outliers
-        method_name = model_type.__name__
-        # table_reference = f"table:{method_name}"
-        # text += sequence2array(confusion_matrix(y_test, y_pred), caption=f"Macierz pomyłek metody {method_name}", label=table_reference, placement='h')
-        y_scores = model.predict_proba(x_test)
-        execution_time = time() - start
-        fpr, tpr, thresholds = roc_curve(y_test, y_scores[:, 1])
-        roc_auc = auc(fpr, tpr)
-        method_running_times[-1].append(round(roc_auc, 2))
-        method_running_times[-1].append(round(execution_time, 3))
-        plt.plot(fpr, tpr, lw=2, label=f"{method_name} (area = {roc_auc:.2f})")
+    model_types = (KMeans,)
+    model = KMeans(n_clusters=2)
+    start = time()
+    x = normalize(x)
+    model.fit(x)
+    model.predict(x)
+    majority_class = int(x.sum() > .5 * len(x))
+    center0, center1 = model.cluster_centers_
+    distance_factors = tuple(np.sum((sample - (center0 if majority_class else center1)) ** 2) / np.sum((sample - (center0 if not majority_class else center1)) ** 2) for sample in x)
+    execution_time = time() - start
+    fpr, tpr, thresholds = roc_curve(y, distance_factors)
+    roc_auc = auc(fpr, tpr)
+    method_running_times[-1].append(round(roc_auc, 2))
+    method_running_times[-1].append(round(execution_time, 3))
+    plt.plot(fpr, tpr, lw=2, label=f"{model_types[0].__name__} (area = {roc_auc:.2f})")
 
     plt.plot([0, 1], [0, 1], "k--")
     plt.axis("square")

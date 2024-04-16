@@ -18,7 +18,7 @@ from sequence2array import sequence2latex
 
 def anomaly_detection_methods():
     method_running_times = []
-    text = "\section{Unsupervised anomaly detection}\n"
+    text = "\section{Anomaly detection methods}\n"
     for dataset_path in Config.datasets_path.iterdir():
         dataset = scipy.io.loadmat(dataset_path)
         dataset_name = dataset_path.with_suffix("").name
@@ -58,7 +58,7 @@ def anomaly_detection_methods():
         plt.ylabel("True Positive Rate")
         plt.title(f"ROC curve of {dataset_name}")
         plt.legend()
-        image_path = Config.image_path.joinpath(dataset_name + ".png")
+        image_path = Config.image_path.joinpath(Path(__file__).name + dataset_name + ".png")
         plt.savefig(image_path)
         plt.clf()
         text += "\n"
@@ -74,15 +74,17 @@ def anomaly_detection_methods():
         r"\ref{" + table_name + "}:\n"
     )
     method_running_times = [
-                               ["", *tuple((model_type.__name__, "") for model_type in model_types)],
-                               [""]
-                               + list(
-                                   chain.from_iterable((("AUC", "Execution time [s]")) for _ in model_types)
-                               ),
-                           ] + method_running_times
+        ["", *tuple((model_type.__name__, "") for model_type in model_types)],
+        [""]
+        + list(
+            chain.from_iterable((("AUC", "Execution time [s]")) for _ in model_types)
+        ),
+    ] + method_running_times
     text += sequence2latex(
         method_running_times,
         label=table_name,
         caption="AUC score and execution time of given method on dataset",
     )
-    Config.text_sections.joinpath(Path(__file__).with_suffix(".tex").name).write_text(text)
+    Config.text_sections.joinpath(Path(__file__).with_suffix(".tex").name).write_text(
+        text
+    )
