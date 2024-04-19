@@ -3,6 +3,7 @@ import subprocess
 from Config import Config
 from section_generation.anomaly_detection_methods import anomaly_detection_methods
 from section_generation.cluster_methods import cluster_methods
+from section_generation.high_performance_musk import high_performance_musk
 from section_generation.summary import summary
 from section_generation.analysis import analysis
 from section_generation.supervised_methods import supervised_methods
@@ -15,7 +16,8 @@ def main():
     # write_datasets()
     # anomaly_detection_methods()
     # supervised_methods()
-    cluster_methods()
+    # cluster_methods()
+    high_performance_musk()
     # analysis()
     # summary()
     subprocess.run(["pdflatex", Config.tex_path.absolute()])
