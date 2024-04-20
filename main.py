@@ -19,9 +19,9 @@ def main():
     # supervised_methods()
     # cluster_methods()
     high_performance_musk()
-    # low_performance_kmeans()
+    low_performance_kmeans()
     # analysis()
-    # summary()
+    summary()
     subprocess.run(["pdflatex", Config.tex_path.absolute()])
 
 

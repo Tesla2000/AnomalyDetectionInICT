@@ -17,7 +17,8 @@ from sequence2array import sequence2latex
 
 def supervised_methods():
     method_running_times = []
-    text = "\section{Supervised anomaly detection}"
+    text = "\section{Supervised anomaly detection}\n"
+    text += "Chose commonly used XGBoost and SVC ML models to determine if the sample in an inliner or an outlier.\n"
     dataset_path = Config.datasets_path.joinpath('pima.mat')
     dataset = scipy.io.loadmat(dataset_path)
     dataset_name = dataset_path.with_suffix("").name
@@ -40,8 +41,6 @@ def supervised_methods():
         y_pred[y_pred == 1] = 0  # inliers
         y_pred[y_pred == -1] = 1  # outliers
         method_name = model_type.__name__
-        # table_reference = f"table:{method_name}"
-        # text += sequence2array(confusion_matrix(y_test, y_pred), caption=f"Macierz pomyłek metody {method_name}", label=table_reference, placement='h')
         y_scores = model.predict_proba(x_test)
         execution_time = time() - start
         fpr, tpr, thresholds = roc_curve(y_test, y_scores[:, 1])
@@ -59,12 +58,13 @@ def supervised_methods():
     image_path = Config.image_path.joinpath(Path(__file__).name + dataset_name + ".png")
     plt.savefig(image_path)
     plt.clf()
-    text += "\n"
+    text += "\nThe ROC curve with results is presented in Figure "r"\ref{figure:" + dataset_name + r"_supervised}"":\n"
     text += fig2latex(
         image_path.relative_to(Config.root),
         placement="h",
         caption=f"ROC curve of {dataset_name} dataset",
         label=f"figure:{dataset_name}_supervised",
+        text_width=1,
     )
     table_name = "table:running_times_and_results_supervised"
     text += (
@@ -81,6 +81,7 @@ def supervised_methods():
     text += sequence2latex(
         method_running_times,
         label=table_name,
+        placement="h",
         caption="AUC score and execution time of given method on dataset",
     )
     Config.text_sections.joinpath(Path(__file__).with_suffix(".tex").name).write_text(

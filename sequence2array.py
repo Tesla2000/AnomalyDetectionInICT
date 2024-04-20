@@ -13,7 +13,7 @@ def sequence2latex(
         r"\centering"
         "\n"
         + (r"\caption{" + caption + "}" if caption is not None else "")
-        + ((r"\label{" + label + "}") if label is not None else "")
+        + (("\n"r"\label{" + label + "}") if label is not None else "")
         + "\n"
         + r"\begin"
         + r"{tabular}"

@@ -15,7 +15,7 @@ from sklearn.preprocessing import normalize
 
 def low_performance_kmeans():
     text = "\subsection{Low performace KMeans}\n"
-    text += "The PCA was conducted on pima dataset to investigate the source of KMean low performance."
+    text += "The PCA was conducted on pima dataset to investigate the source of KMean low performance. "
     dataset_path = next(Config.datasets_path.glob("pima*"))
     dataset = scipy.io.loadmat(dataset_path)
     x, y = dataset["X"], dataset["y"].flatten()
@@ -36,13 +36,14 @@ def low_performance_kmeans():
         placement="h",
         caption="2 element principal component analysis of pima",
         label=f"figure:{image_name}",
+        text_width=1,
     )
-    text += r"The results are presented of figure \ref{figure:" + image_name + "}. "
+    text += r"The results are presented of Figure \ref{figure:" + image_name + "}.\n\n"
     text += "As can be seem the separation is not as easy as in musk and the only noticeable distinction between"
     text += " outliers and inliners in grouping of the former in the center of second variables values and lower-end of "
     text += f"first variable values. With the number of dimensions at 8 and {round(sum(pca_solver.explained_variance_ratio_), 3)} of explained variance ratio"
     text += f" it is reasonable to assume that better results may be possible to obtain with distances to centroid as a metric."
-    text += "\n\n To Similarly as in musk samples were scored for outlierness, this time with use of Mahalanobis. "
+    text += "\n\n Similarly as in musk samples were scored for outlierness, this time with use of Mahalanobis. "
     model = EllipticEnvelope()
     model.fit(x)
     predictions = model.score_samples(x)
@@ -63,8 +64,9 @@ def low_performance_kmeans():
         placement="h",
         caption="EllipticEnvelope score of outlierness",
         label=f"figure:{image_name}",
+        text_width=1,
     )
-    text += r"The results presented at \ref{figure:" + image_name + "} explain why the results of EllipticEnvelope are superion to once obtained with KMean"
+    text += r"The results presented on Figure \ref{figure:" + image_name + "} explain why the results of EllipticEnvelope are superion to once obtained with KMean. "
     Config.text_sections.joinpath(Path(__file__).with_suffix(".tex").name).write_text(
         text
     )

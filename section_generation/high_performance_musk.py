@@ -13,7 +13,7 @@ from Config import Config
 
 def high_performance_musk():
     text = "\subsection{High performance on musk}\n"
-    text += "The source of unusually high results on musk dataset was investigated through the use of PCA"
+    text += "The source of unusually high results on musk dataset was investigated through the use of PCA. "
     dataset_path = next(Config.datasets_path.glob("musk*"))
     dataset = scipy.io.loadmat(dataset_path)
     x, y = dataset["X"], dataset["y"].flatten()
@@ -31,12 +31,13 @@ def high_performance_musk():
     plt.clf()
     text += fig2latex(
         image_path.relative_to(Config.root),
-        placement="h",
+        placement="h!",
         caption="2 element principal component analysis of musk",
         label=f"figure:{image_name}",
+        text_width=1,
     )
-    text += r"The results are presented of figure \ref{figure:" + image_name + "}. As can be seen PCA clearly separated claimed outliers from inliners."
-    text += "To further confirm that no specific feature is a matter of distinction corelation analysis was conducted."
+    text += r"The results are presented of Figure \ref{figure:" + image_name + "}:\n\n"
+    text += "As can be seen PCA clearly separated claimed outliers from inliners. To further confirm that no specific feature is a matter of distinction corelation analysis was conducted."
     correlations = tuple(np.corrcoef(x[:, i], y)[0, 1] for i in range(x.shape[-1]))
     text += f"The maximal obtained correlation was {max(correlations)=:.2f} and the least {min(correlations)=:.2f} which showes that a combination of features caused high accuracy."
     lof = LocalOutlierFactor(novelty=True)
@@ -59,8 +60,9 @@ def high_performance_musk():
         placement="h",
         caption="LOF score of outlierness",
         label=f"figure:{image_name}",
+        text_width=1,
     )
-    text += r"Judging from the LOF scores of outlier detection presented of figure \ref{figure:" + image_name + "}"
+    text += r"Judging from the LOF scores of outlier detection presented of Figure \ref{figure:" + image_name + "}"
     text += "It can be deduced that LOF is not a valuable method of outlier detection of this task. Due to it marking"
     text += " samples at the edged of PCA clusters as outliers."
     Config.text_sections.joinpath(Path(__file__).with_suffix(".tex").name).write_text(
