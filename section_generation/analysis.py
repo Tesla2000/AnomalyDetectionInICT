@@ -1,8 +1,10 @@
 from pathlib import Path
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 
 
+@_set_seed
 def analysis():
     text = r"\section{Analysis}" "\n"
     text += (

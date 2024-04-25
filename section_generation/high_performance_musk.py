@@ -9,8 +9,10 @@ from sklearn.decomposition import PCA
 from sklearn.neighbors import LocalOutlierFactor
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 
 
+@_set_seed
 def high_performance_musk():
     text = "\subsection{High performance on musk}\n"
     text += "The source of unusually high results on musk dataset was investigated through the use of PCA. "

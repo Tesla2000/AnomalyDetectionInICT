@@ -9,10 +9,10 @@ from sklearn.covariance import EllipticEnvelope
 from sklearn.decomposition import PCA
 
 from Config import Config
-from sklearn.preprocessing import normalize
+from section_generation._set_seed import _set_seed
 
 
-
+@_set_seed
 def low_performance_kmeans():
     text = "\subsection{Low performace KMeans}\n"
     text += "The PCA was conducted on pima dataset to investigate the source of KMean low performance. "

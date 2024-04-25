@@ -1,11 +1,13 @@
 from pathlib import Path
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 
 
+@_set_seed
 def summary():
     text = r"\section{Summary}" "\n"
-    text += "Analysis for final results contained in tables "r"\ref{running_times_and_results_dedicated} and \ref{running_times_and_results_supervised}"
+    text += "Analysis for final results contained in tables "r"\ref{table:running_times_and_results_dedicated} and \ref{table:running_times_and_results_supervised}"
     text += " can lead to conclusion that supervised methods tend to have advanced over unsupervised once in terms of accuracy. "
     text += "The behavior can be explained by access to additional information that unsupervised methods lack. "
     text += "In terms of performance elliptic envelope method turns out yo be much more computationally expensive. "

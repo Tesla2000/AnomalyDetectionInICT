@@ -14,13 +14,13 @@ _ = anomaly_detection_methods, summary, analysis, supervised_methods, write_data
 
 
 def main():
-    # write_datasets()
-    # anomaly_detection_methods()
-    # supervised_methods()
-    # cluster_methods()
+    write_datasets()
+    anomaly_detection_methods()
+    supervised_methods()
+    cluster_methods()
     high_performance_musk()
     low_performance_kmeans()
-    # analysis()
+    analysis()
     summary()
     subprocess.run(["pdflatex", Config.tex_path.absolute()])
 

@@ -13,10 +13,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import LocalOutlierFactor
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 from sequence2array import sequence2latex
 from operator import attrgetter
 
 
+@_set_seed
 def anomaly_detection_methods():
     method_running_times = []
     text = "\section{Anomaly detection methods}\n"
@@ -74,12 +76,12 @@ def anomaly_detection_methods():
     text += ' ,'.join(references) + "."
     table_name = "table:running_times_and_results_dedicated"
     method_running_times = [
-        ["", *tuple((model_type.__name__, "") for model_type in model_types)],
-        [""]
-        + list(
-            chain.from_iterable((("AUC", "Execution time [s]")) for _ in model_types)
-        ),
-    ] + method_running_times
+                               ["", *tuple((model_type.__name__, "") for model_type in model_types)],
+                               [""]
+                               + list(
+                                   chain.from_iterable((("AUC", "Execution time [s]")) for _ in model_types)
+                               ),
+                           ] + method_running_times
     text += (
         "\n\nMethod running times and results are summed up in Table "
         r"\ref{" + table_name + "}:\n"

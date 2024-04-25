@@ -12,9 +12,11 @@ from sklearn.svm import SVC
 from xgboost import XGBClassifier
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 from sequence2array import sequence2latex
 
 
+@_set_seed
 def supervised_methods():
     method_running_times = []
     text = "\section{Supervised anomaly detection}\n"

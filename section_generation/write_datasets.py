@@ -2,9 +2,11 @@ import scipy
 from scipy.stats import jarque_bera
 
 from Config import Config
+from section_generation._set_seed import _set_seed
 from sequence2array import sequence2latex
 
 
+@_set_seed
 def write_datasets():
     dataset_text = r"\section{Datasets}"
     dataset_text += "\nThe folowing datasets were chosen"

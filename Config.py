@@ -15,7 +15,3 @@ class Config:
     image_path.mkdir(exist_ok=True)
     dataset_descriptions = root / "dataset_descriptions"
     random_state = 42
-
-
-random.seed(Config.random_state)
-np.random.seed(Config.random_state)
