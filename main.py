@@ -1,6 +1,7 @@
 import subprocess
 
 from Config import Config
+from download_sets import download_sets
 from section_generation.anomaly_detection_methods import anomaly_detection_methods
 from section_generation.cluster_methods import cluster_methods
 from section_generation.high_performance_musk import high_performance_musk
@@ -14,6 +15,7 @@ _ = anomaly_detection_methods, summary, analysis, supervised_methods, write_data
 
 
 def main():
+    download_sets()
     write_datasets()
     anomaly_detection_methods()
     supervised_methods()
